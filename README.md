@@ -35,7 +35,24 @@ Briefly, just open a Windows Powershell as administrator, and type:
 
 It might request a restart, and when you restart your computer you’ll have an app in the start menu or task bar called “Ubuntu”!
 
-### Step 3:  install Anaconda on Ubuntu
+### Step 3: install Nvidia driver for WSL2
+
+Download the GPU driver for your specific Nvidia GPU [here](https://www.nvidia.com/Download/index.aspx?lang=en-us).
+
+Then run these commands to install CUDA 
+([reference](https://developer.nvidia.com/cuda-downloads?target_os=Linux&target_arch=x86_64&Distribution=WSL-Ubuntu&target_version=2.0&target_type=deb_local))
+
+```
+wget https://developer.download.nvidia.com/compute/cuda/repos/wsl-ubuntu/x86_64/cuda-wsl-ubuntu.pin
+sudo mv cuda-wsl-ubuntu.pin /etc/apt/preferences.d/cuda-repository-pin-600
+wget https://developer.download.nvidia.com/compute/cuda/11.7.0/local_installers/cuda-repo-wsl-ubuntu-11-7-local_11.7.0-1_amd64.deb
+sudo dpkg -i cuda-repo-wsl-ubuntu-11-7-local_11.7.0-1_amd64.deb
+sudo cp /var/cuda-repo-wsl-ubuntu-11-7-local/cuda-*-keyring.gpg /usr/share/keyrings/
+sudo apt-get update
+sudo apt-get -y install cuda
+```
+
+### Step 4:  install Anaconda on Ubuntu
 We’ll need to install Anaconda inside our Ubuntu environment to manage packages easily. Open your new Ubuntu app (and fix any errors that come up on first launch. I had a few, but they were either self explanatory or fixed easily with some quick Googling). 
 Now you want to download, then run, the Linux Anaconda installer as follows. If you’re following this much later than March 2022 you can replace the url below with the latest version from [the Anaconda website](https://www.anaconda.com/products/individual?modal=nucleus).
 
@@ -53,7 +70,7 @@ Now type and run
     conda —-help
 If it gives you a long list of conda options, that means it’s successfully installed Anaconda within Ubuntu!
 
-### Step 4: creating our environment
+### Step 5: creating our environment
 
 We’ll now create and activate a conda environment (inside Ubuntu) with all the appropriate dependencies. 
 
@@ -73,7 +90,7 @@ Now install some other dependencies:
     conda install jupyter pandas requests matplotlib
     conda install opencv -c conda-forge
 
-### Step 5, Option 1: Similar to Colab, Easy
+### Step 6, Option 1: Similar to Colab, Easy
 Option 1 for how to actually run the code and get images / video. Option 1 involves downloading a .ipynb, that is lightly modified from the colab notebook, editing cells and editing them inside the notebook environment.
 #### To use Option 1:
 We’ll be working within a jupyter notebook version of the colab notebook. (I’m currently working on a cleaner interface, make sure to star and watch the repo to see when this goes live). 
@@ -96,7 +113,7 @@ You might notice that this doesn’t automatically open jupyter in your browser.
 
 This should open jupyter in your browser! Now navigate to the folder where you have placed your jupyter notebook, and open it. Run the cells, one by one. They should install further required dependencies and download all the models for you. Along the way, you can change any settings you would like. One of the last cells asks for “text_prompts”, which you can specify to create whatever you wish!
 
-### Step 5, Option 2. Batch mode command line, create multiple videos in 1 run, more advanced, still experimental
+### Step 6, Option 2. Batch mode command line, create multiple videos in 1 run, more advanced, still experimental
 Option 2 for how to actually run the code and get images / video. This involves setting up a folder with settings files, which the notebook will work through 1 by 1. This will allow you to specify prompts for as many different videos as you would like, and create them all with a single run of a notebook. 
 
 Some options must be specified once, and will be used for all items in the queue. Set these in "queue/master_settings.txt":
